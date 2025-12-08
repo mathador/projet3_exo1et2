@@ -1,3 +1,15 @@
+Si nginx est rouge dans herd (car port 80 utilisé pra system dans windows c'est IIS):
+sc stop W3SVC
+sc config W3SVC start= disabled
+
+Ensuite si php artisan ne trouve pas de port,
+where php
+permet de savoir si le path tombe bien sur le php de Herd et pas de MAMP par exemple
+
+Puis il faut générer une key:
+php artisan key:generate
+
+
 # Transformez l'architecture d'une application existante
 
 # Plot
@@ -31,10 +43,17 @@ https://github.com/coreybutler/nvm-windows#readme
 
 et créer un .env
 
-4. Run `npm i` and `npm run dev`
+et migrate les data
+
+php artisan migrate
+
+
+
+4. Run `npm i` 
+~~and `npm run dev`~~ NONNNNNNNNNNNNNNNN
 
 5. Start Herd
 
-6. Access `http://monolithic-app.test` from your browser
+~~6. Access `http://monolithic-app.test` from your browser~~
 
 You are setup!
