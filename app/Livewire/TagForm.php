@@ -15,12 +15,15 @@ class TagForm extends Component
 
     public function save()
     {
+        // logique métier
         $this->validate();
 
+        // persitance
         Tag::create(['name' => $this->name]);
 
         $this->reset('name');
 
+        // affichage ???
         $this->dispatch('tagCreated');
 
         session()->flash('message', 'Tag added!');

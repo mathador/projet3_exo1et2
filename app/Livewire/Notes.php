@@ -38,14 +38,17 @@ class Notes extends Component
 
     public function save()
     {
+        // metier
         $this->validate();
 
+        // persistance
         Note::create([
             'user_id' => Auth::id(),
             'tag_id' => $this->tag_id,
             'text' => $this->text,
         ]);
 
+        // réinitialisation
         $this->text = '';
         $this->tag_id = '';
 
@@ -56,7 +59,9 @@ class Notes extends Component
 
     public function delete($noteId)
     {
+        // persitance
         Note::where('id', $noteId)->where('user_id', Auth::id())->delete();
+        // ihm ?
         $this->loadNotes();
     }
 
