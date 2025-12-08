@@ -1,0 +1,13 @@
+<mxfile host="65bd71144e">
+    <diagram id="PJk1kJqEbEfhy8ywpfTE" name="Page-1">
+        <mxGraphModel dx="1148" dy="779" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="graph TD&#xa;    A[Utilisateur] --&gt; B[Navigateur Web]&#xa;    B --&gt; C[Routes Web&lt;br/&gt;/dashboard, /settings]&#xa;    C --&gt; D[Middleware Authentification]&#xa;    D --&gt; E[Composants Livewire&lt;br/&gt;Notes, TagForm]&#xa;    E --&gt; F[Modèles&lt;br/&gt;User, Note, Tag]&#xa;    F --&gt; G[Base de Données&lt;br/&gt;SQLite/MySQL]&#xa;    G --&gt; F&#xa;    F --&gt; E&#xa;    E --&gt; H[Vues Blade&lt;br/&gt;livewire/notes, livewire/tag-form]&#xa;    H --&gt; B&#xa;    E --&gt; I[Actions&lt;br/&gt;Sauvegarder Note, Créer Tag]&#xa;    I --&gt; F&#xa;" style="shadow=0;dashed=0;align=left;strokeWidth=1;shape=mxgraph.mermaid.abstract.mermaid;labelBackgroundColor=#ffffff;noLabel=1;theme=default;" vertex="1" parent="1">
+                    <mxGeometry x="110" y="120" width="500" height="750" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
