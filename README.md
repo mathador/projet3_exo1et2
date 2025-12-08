@@ -26,6 +26,11 @@ https://github.com/coreybutler/nvm-windows#readme
 
 3. Clone this project
 
+4. il faut peut-être
+`composer install`
+
+et créer un .env
+
 4. Run `npm i` and `npm run dev`
 
 5. Start Herd
