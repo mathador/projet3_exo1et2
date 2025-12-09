@@ -46,7 +46,7 @@ https://github.com/coreybutler/nvm-windows#readme
 
 4. il faut peut-être
 ```bash
-`composer install`
+composer install
 ```
 
 et créer un .env
@@ -56,13 +56,29 @@ et migrate les data
 ```bash
 php artisan migrate
 ```
+Pour nettoyer:
 
+```bash
+php artisan config:clear
+php artisan cache:clear
+php artisan config:cache
+php artisan route:cache
+composer dump-autoload
+```
 
-4. Run `npm i` 
-~~and `npm run dev`~~ NONNNNNNNNNNNNNNNN
+4. Run 
+
+```bash
+npm i
+```
+and 
+```bash
+npm run dev
+```
 
 5. Start Herd
 
-~~6. Access `http://monolithic-app.test` from your browser~~
+6. Access `http://monolithic-app.test` from your browser
 
 You are setup!
+
