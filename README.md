@@ -1,6 +1,8 @@
-Si nginx est rouge dans herd (car port 80 utilisé pra system dans windows c'est IIS):
+Si nginx est rouge dans herd (car port 80 utilisé par "system" dans windows, c'est IIS):
+```bash
 sc stop W3SVC
 sc config W3SVC start= disabled
+```
 
 Ensuite si php artisan ne trouve pas de port,
 where php
