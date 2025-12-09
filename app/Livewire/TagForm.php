@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\Tag;
+use App\Services\Tags\TagService;
 
 class TagForm extends Component
 {
@@ -13,17 +13,25 @@ class TagForm extends Component
         'name' => 'required|string|max:50|unique:tags,name',
     ];
 
+    protected TagService $tagService;
+
+    public function boot(TagService $tagService)
+    {
+        $this->tagService = $tagService;
+    }
+
     public function save()
     {
-        // logique métier
+        // Validation
         $this->validate();
 
-        // persitance
-        Tag::create(['name' => $this->name]);
+        // Création via le service
+        $this->tagService->createTag($this->name);
 
+        // Réinitialisation
         $this->reset('name');
 
-        // affichage ???
+        // Notification aux autres composants
         $this->dispatch('tagCreated');
 
         session()->flash('message', 'Tag added!');

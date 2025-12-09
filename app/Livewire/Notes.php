@@ -3,9 +3,8 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\Note;
-use App\Models\Tag;
-use Illuminate\Support\Facades\Auth;
+use App\Services\Notes\NoteService;
+use App\Services\Tags\TagService;
 
 class Notes extends Component
 {
@@ -20,38 +19,44 @@ class Notes extends Component
     ];
     protected $listeners = ['tagCreated' => 'refreshTags'];
 
+    protected NoteService $noteService;
+    protected TagService $tagService;
+
+    public function boot(NoteService $noteService, TagService $tagService)
+    {
+        $this->noteService = $noteService;
+        $this->tagService = $tagService;
+    }
+
     public function mount()
     {
-        $this->tags = Tag::all();
+        $this->tags = $this->tagService->getAllTags();
         $this->loadNotes();
     }
 
     public function loadNotes()
     {
-        $this->notes = Note::with('tag')->where('user_id', Auth::id())->latest()->get();
+        $this->notes = $this->noteService->getUserNotes();
     }
 
     public function refreshTags()
     {
-        $this->tags = \App\Models\Tag::all();
+        $this->tags = $this->tagService->getAllTags();
     }
 
     public function save()
     {
-        // metier
+        // Validation
         $this->validate();
 
-        // persistance
-        Note::create([
-            'user_id' => Auth::id(),
-            'tag_id' => $this->tag_id,
-            'text' => $this->text,
-        ]);
+        // Création via le service
+        $this->noteService->createNote($this->text, $this->tag_id);
 
-        // réinitialisation
+        // Réinitialisation
         $this->text = '';
         $this->tag_id = '';
 
+        // Rechargement des notes
         $this->loadNotes();
 
         session()->flash('message', 'Note added.');
@@ -59,9 +64,10 @@ class Notes extends Component
 
     public function delete($noteId)
     {
-        // persitance
-        Note::where('id', $noteId)->where('user_id', Auth::id())->delete();
-        // ihm ?
+        // Suppression via le service
+        $this->noteService->deleteNote($noteId);
+        
+        // Rechargement des notes
         $this->loadNotes();
     }
 

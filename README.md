@@ -5,11 +5,15 @@ sc config W3SVC start= disabled
 ```
 
 Ensuite si php artisan ne trouve pas de port,
+```bash
 where php
+```
 permet de savoir si le path tombe bien sur le php de Herd et pas de MAMP par exemple
 
 Puis il faut générer une key:
+```bash
 php artisan key:generate
+```
 
 
 # Transformez l'architecture d'une application existante
@@ -41,14 +45,17 @@ https://github.com/coreybutler/nvm-windows#readme
 3. Clone this project
 
 4. il faut peut-être
+```bash
 `composer install`
+```
 
 et créer un .env
 
 et migrate les data
 
+```bash
 php artisan migrate
-
+```
 
 
 4. Run `npm i` 
