@@ -49,10 +49,14 @@ et migrate les data
 
 php artisan migrate
 
-
+php artisan config:clear
+php artisan cache:clear
+php artisan config:cache
+php artisan route:cache
+composer dump-autoload
 
 4. Run `npm i` 
-~~and `npm run dev`~~ NONNNNNNNNNNNNNNNN
+and `npm run dev`
 
 5. Start Herd
 
