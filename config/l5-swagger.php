@@ -20,7 +20,7 @@ return [
                     base_path('app'),
                 ],
                 'excludes' => [],
-                'base' => env('L5_SWAGGER_CONST_HOST', 'http://localhost:8000'),
+                'base' => env('L5_SWAGGER_CONST_HOST', 'http://monolithic-app.test'),
             ],
         ],
     ],
@@ -46,7 +46,7 @@ return [
                 base_path('app'),
             ],
             'excludes' => [],
-            'base' => env('L5_SWAGGER_CONST_HOST', 'http://localhost:8000'),
+            'base' => env('L5_SWAGGER_CONST_HOST', 'http://monolithic-app.test'),
         ],
         'scanOptions' => [
             'exclude' => [],
@@ -87,7 +87,7 @@ return [
             ],
         ],
         'constants' => [
-            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://localhost:8000'),
+            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://monolithic-app.test'),
         ],
     ],
 ];

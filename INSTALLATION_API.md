@@ -63,6 +63,10 @@ Une fois l'application lancée, testez l'endpoint health :
 ```bash
 curl http://localhost:8000/api/health
 ```
+ou bien
+```bash
+curl http://monolithic-app.test//api/health
+```
 
 Vous devriez recevoir une réponse JSON indiquant que la base de données est connectée.
 

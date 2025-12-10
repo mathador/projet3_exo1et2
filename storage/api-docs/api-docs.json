@@ -10,11 +10,11 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8000",
+            "url": "http://monolithic-app.test",
             "description": "Serveur API"
         },
         {
-            "url": "http://localhost:8000"
+            "url": "http://monolithic-app.test"
         }
     ],
     "paths": {

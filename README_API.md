@@ -37,6 +37,19 @@ php artisan l5-swagger:generate
 ```
 http://localhost:8000/api
 ```
+ou plutôt
+```
+http://monolithic-app.test/api
+```
+
+### Base URL pour l'interface swagger
+```
+http://localhost:8000/api/documentation
+```
+ou plutôt
+```
+http://monolithic-app.test/api/documentation
+```
 
 ### Endpoints publics
 
