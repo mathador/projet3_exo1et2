@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Services\Tags\TagService;
+use App\Services\Api\TagApiClient;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class TagsController extends Controller
 {
     public function __construct(
-        protected TagService $tagService
+        protected TagApiClient $tagApiClient
     ) {}
 
     /**
@@ -36,7 +36,7 @@ class TagsController extends Controller
      */
     public function index(): JsonResponse
     {
-        $tags = $this->tagService->getAllTags();
+        $tags = $this->tagApiClient->list();
 
         return response()->json([
             'data' => $tags,
@@ -82,7 +82,7 @@ class TagsController extends Controller
         ]);
 
         try {
-            $tag = $this->tagService->createTag($validated['name']);
+            $tag = $this->tagApiClient->create($validated['name']);
 
             return response()->json([
                 'data' => $tag,
@@ -128,7 +128,7 @@ class TagsController extends Controller
      */
     public function show(string $id): JsonResponse
     {
-        $tag = $this->tagService->getTagById((int) $id);
+        $tag = $this->tagApiClient->getById((int) $id);
 
         if (!$tag) {
             return response()->json([
@@ -188,7 +188,7 @@ class TagsController extends Controller
             'name' => ['required', 'string', 'max:50', 'unique:tags,name,' . $id],
         ]);
 
-        $tag = $this->tagService->getTagById((int) $id);
+        $tag = $this->tagApiClient->getById((int) $id);
 
         if (!$tag) {
             return response()->json([
@@ -236,7 +236,7 @@ class TagsController extends Controller
      */
     public function destroy(string $id): JsonResponse
     {
-        $tag = $this->tagService->getTagById((int) $id);
+        $tag = $this->tagApiClient->getById((int) $id);
 
         if (!$tag) {
             return response()->json([

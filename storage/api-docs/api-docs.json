@@ -368,6 +368,9 @@
                             }
                         }
                     },
+                    "401": {
+                        "description": "Non authentifié"
+                    },
                     "422": {
                         "description": "Erreur de validation"
                     }
@@ -412,6 +415,9 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "Non authentifié"
                     },
                     "404": {
                         "description": "Note non trouvée"
@@ -476,8 +482,14 @@
                             }
                         }
                     },
+                    "401": {
+                        "description": "Non authentifié"
+                    },
                     "404": {
                         "description": "Note non trouvée"
+                    },
+                    "422": {
+                        "description": "Erreur de validation"
                     }
                 },
                 "security": [
@@ -519,6 +531,9 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "Non authentifié"
                     },
                     "404": {
                         "description": "Note non trouvée"
@@ -610,6 +625,9 @@
                             }
                         }
                     },
+                    "401": {
+                        "description": "Non authentifié"
+                    },
                     "422": {
                         "description": "Erreur de validation"
                     }
@@ -654,6 +672,9 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "Non authentifié"
                     },
                     "404": {
                         "description": "Tag non trouvé"
@@ -714,8 +735,14 @@
                             }
                         }
                     },
+                    "401": {
+                        "description": "Non authentifié"
+                    },
                     "404": {
                         "description": "Tag non trouvé"
+                    },
+                    "422": {
+                        "description": "Erreur de validation"
                     }
                 },
                 "security": [
@@ -757,6 +784,9 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "Non authentifié"
                     },
                     "404": {
                         "description": "Tag non trouvé"

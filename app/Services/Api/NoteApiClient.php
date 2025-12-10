@@ -2,6 +2,7 @@
 
 namespace App\Services\Api;
 
+use App\Models\Note;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
 
@@ -21,6 +22,28 @@ class NoteApiClient
 
         return collect($response->json('data', []))
             ->map(fn (array $note) => $this->mapNote($note));
+    }
+
+    public function getById(int $noteId): Note
+    {
+        $response = $this->client->auth()->get("/notes/{$noteId}");
+
+        if ($response->failed()) {
+            throw new \RuntimeException('Impossible de récupérer la note via l’API.');
+        }
+
+        return $this->mapNote($response->json('data', []));
+    }
+
+    public function userOwnsNote(int $noteId): bool
+    {
+        $response = $this->client->auth()->get("/notes/{$noteId}");
+
+        if ($response->failed()) {
+            throw new \RuntimeException('Impossible de récupérer la note via l’API.');
+        }
+
+        return $response->json('data.user_id') === $this->client->auth()->user()->id;
     }
 
     public function create(string $text, int $tagId): object

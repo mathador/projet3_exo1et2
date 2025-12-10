@@ -2,6 +2,7 @@
 
 namespace App\Services\Api;
 
+use App\Models\Tag;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
 
@@ -23,14 +24,25 @@ class TagApiClient
             ->map(fn (array $tag) => (object) $tag);
     }
 
-    public function create(string $name): object
+    public function getById(int $tagId): Tag
+    {
+        $response = $this->client->auth()->get("/tags/{$tagId}");
+
+        if ($response->failed()) {
+            throw new \RuntimeException('Impossible de récupérer le tag via l’API.');
+        }
+
+        return $response->json('data', []);
+    }
+
+    public function create(string $name): Tag
     {
         $response = $this->client->auth()->post('/tags', [
             'name' => $name,
         ]);
 
         if ($response->created()) {
-            return (object) $response->json('data', []);
+            return $response->json('data', []);
         }
 
         if ($response->status() === 422) {

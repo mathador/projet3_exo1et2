@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Services\Notes\NoteService;
+use App\Services\Api\NoteApiClient;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class NotesController extends Controller
 {
     public function __construct(
-        protected NoteService $noteService
+        protected NoteApiClient $noteApiClient
     ) {}
 
     /**
@@ -36,7 +36,7 @@ class NotesController extends Controller
      */
     public function index(): JsonResponse
     {
-        $notes = $this->noteService->getUserNotes();
+        $notes = $this->noteApiClient->list();
 
         return response()->json([
             'data' => $notes,
@@ -83,7 +83,7 @@ class NotesController extends Controller
             'tag_id' => ['required', 'exists:tags,id'],
         ]);
 
-        $note = $this->noteService->createNote(
+        $note = $this->noteApiClient->create(
             $validated['text'],
             $validated['tag_id']
         );
@@ -126,7 +126,8 @@ class NotesController extends Controller
      */
     public function show(string $id): JsonResponse
     {
-        $notes = $this->noteService->getUserNotes();
+        //$note = $this->noteApiClient->getById((int) $id);
+        $notes = $this->noteApiClient->list();
         $note = $notes->firstWhere('id', $id);
 
         if (!$note) {
@@ -189,13 +190,13 @@ class NotesController extends Controller
             'tag_id' => ['sometimes', 'required', 'exists:tags,id'],
         ]);
 
-        if (!$this->noteService->userOwnsNote((int) $id)) {
+        if (!$this->noteApiClient->userOwnsNote((int) $id)) {
             return response()->json([
                 'message' => 'Note non trouvée',
             ], 404);
         }
 
-        $note = \App\Models\Note::findOrFail($id);
+        $note = $this->noteApiClient->getById((int) $id);
         $note->update($validated);
 
         return response()->json([
@@ -236,15 +237,14 @@ class NotesController extends Controller
      */
     public function destroy(string $id): JsonResponse
     {
-        if (!$this->noteService->deleteNote((int) $id)) {
+        if ($this->noteApiClient->delete((int) $id)) {
             return response()->json([
-                'message' => 'Note non trouvée',
-            ], 404);
+                'message' => 'Note supprimée avec succès',
+            ]);
         }
-
+        
         return response()->json([
-            'message' => 'Note supprimée avec succès',
-        ]);
+            'message' => 'Note non trouvée',
+        ], 404);
     }
 }
-
