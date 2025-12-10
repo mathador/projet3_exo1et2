@@ -66,6 +66,10 @@ class TagsController extends Controller
      *         )
      *     ),
      *     @OA\Response(
+     *         response=401,
+     *         description="Non authentifié"
+     *     ),
+     *     @OA\Response(
      *         response=422,
      *         description="Erreur de validation"
      *     )
@@ -111,6 +115,10 @@ class TagsController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="data", type="object")
      *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Non authentifié"
      *     ),
      *     @OA\Response(
      *         response=404,
@@ -161,8 +169,16 @@ class TagsController extends Controller
      *         )
      *     ),
      *     @OA\Response(
+     *         response=401,
+     *         description="Non authentifié"
+     *     ),
+     *     @OA\Response(
      *         response=404,
      *         description="Tag non trouvé"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Erreur de validation"
      *     )
      * )
      */
@@ -207,6 +223,10 @@ class TagsController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Tag supprimé avec succès")
      *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Non authentifié"
      *     ),
      *     @OA\Response(
      *         response=404,

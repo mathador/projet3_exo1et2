@@ -67,6 +67,10 @@ class NotesController extends Controller
      *         )
      *     ),
      *     @OA\Response(
+     *         response=401,
+     *         description="Non authentifié"
+     *     ),
+     *     @OA\Response(
      *         response=422,
      *         description="Erreur de validation"
      *     )
@@ -109,6 +113,10 @@ class NotesController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="data", type="object")
      *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Non authentifié"
      *     ),
      *     @OA\Response(
      *         response=404,
@@ -161,8 +169,16 @@ class NotesController extends Controller
      *         )
      *     ),
      *     @OA\Response(
+     *         response=401,
+     *         description="Non authentifié"
+     *     ),
+     *     @OA\Response(
      *         response=404,
      *         description="Note non trouvée"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Erreur de validation"
      *     )
      * )
      */
@@ -207,6 +223,10 @@ class NotesController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Note supprimée avec succès")
      *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Non authentifié"
      *     ),
      *     @OA\Response(
      *         response=404,
