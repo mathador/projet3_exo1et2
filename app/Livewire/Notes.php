@@ -19,24 +19,24 @@ class Notes extends Component
     ];
     protected $listeners = ['tagCreated' => 'refreshTags'];
 
-    protected NoteApiClient $noteService;
-    protected TagApiClient $tagService;
+    protected NoteApiClient $noteApiClient;
+    protected TagApiClient $tagApiClient;
 
-    public function boot(NoteApiClient $noteService, TagApiClient $tagService)
+    public function boot(NoteApiClient $noteApiClient, TagApiClient $tagApiClient)
     {
-        $this->noteService = $noteService;
-        $this->tagService = $tagService;
+        $this->noteApiClient = $noteApiClient;
+        $this->tagApiClient = $tagApiClient;
     }
 
     public function mount()
     {
-        $this->tags = $this->tagService->list();
+        $this->tags = $this->tagApiClient->list();
         $this->loadNotes();
     }
 
     public function loadNotes()
     {
-        $this->notes = $this->noteService->list();
+        $this->notes = $this->noteApiClient->list();
     }
 
     public function refreshTags()
@@ -50,7 +50,7 @@ class Notes extends Component
         $this->validate();
 
         // Création via le service
-        $this->noteService->create($this->text, (int) $this->tag_id);
+        $this->noteApiClient->create($this->text, (int) $this->tag_id);
 
         // Réinitialisation
         $this->text = '';
@@ -65,7 +65,7 @@ class Notes extends Component
     public function delete($noteId)
     {
         // Suppression via le service
-        $this->noteService->delete((int) $noteId);
+        $this->noteApiClient->delete((int) $noteId);
         
         // Rechargement des notes
         $this->loadNotes();

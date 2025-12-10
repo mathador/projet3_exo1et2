@@ -9,10 +9,10 @@ use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function __construct(
-        protected NoteService $noteService,
-        protected TagService $tagService
-    ) {}
+    // public function __construct(
+    //     // protected NoteService $noteService,
+    //     // protected TagService $tagService
+    // ) {}
 
     /**
      * Affiche le tableau de bord avec les notes et tags.

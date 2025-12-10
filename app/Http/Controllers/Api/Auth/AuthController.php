@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\Api\AuthenticationApiClient;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    public function __construct(
+        protected AuthenticationApiClient $authenticationApiClient
+    ) {}
     /**
      * Enregistre un nouvel utilisateur.
      *
@@ -50,17 +52,16 @@ class AuthController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-        ]);
-
-        $token = $user->createToken('auth-token')->plainTextToken;
+        $user = $this->authenticationApiClient->register(
+            $validated['name'],
+            $validated['email'],
+            $validated['password'],
+            $validated['password_confirmation']
+        );
 
         return response()->json([
-            'user' => $user,
-            'token' => $token,
+            'user' => $user->user,
+            'token' => $user->token,
         ], 201);
     }
 
@@ -100,19 +101,19 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        if($this->authenticationApiClient->login(
+            User::where('email', $request->email)->firstOrFail(),
+            $request->password
+        )){
             return response()->json([
-                'message' => 'Identifiants invalides',
-            ], 401);
+                //'user' => $user,
+                //'token' => $token,
+            ]);
         }
 
-        $user = Auth::user();
-        $token = $user->createToken('auth-token')->plainTextToken;
-
         return response()->json([
-            'user' => $user,
-            'token' => $token,
-        ]);
+            'message' => 'Identifiants invalides',
+        ], 401);
     }
 
     /**
@@ -136,41 +137,8 @@ class AuthController extends Controller
      *     )
      * )
      */
-    public function logout(Request $request): JsonResponse
+    public function logout(Request $request): void
     {
-        $request->user()->currentAccessToken()->delete();
-
-        return response()->json([
-            'message' => 'Déconnexion réussie',
-        ]);
-    }
-
-    /**
-     * Retourne l'utilisateur authentifié.
-     *
-     * @OA\Get(
-     *     path="/api/auth/user",
-     *     summary="Obtenir l'utilisateur authentifié",
-     *     tags={"Authentication"},
-     *     security={{"sanctum":{}}},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Utilisateur authentifié",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="user", type="object")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Non authentifié"
-     *     )
-     * )
-     */
-    public function user(Request $request): JsonResponse
-    {
-        return response()->json([
-            'user' => $request->user(),
-        ]);
+        $this->authenticationApiClient->logout();
     }
 }
-

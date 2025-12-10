@@ -13,11 +13,11 @@ class TagForm extends Component
         'name' => 'required|string|max:50',
     ];
 
-    protected TagApiClient $tagService;
+    protected TagApiClient $tagApiClient;
 
-    public function boot(TagApiClient $tagService)
+    public function boot(TagApiClient $tagApiClient)
     {
-        $this->tagService = $tagService;
+        $this->tagApiClient = $tagApiClient;
     }
 
     public function save()
@@ -26,7 +26,7 @@ class TagForm extends Component
         $this->validate();
 
         // Création via le service
-        $this->tagService->create($this->name);
+        $this->tagApiClient->create($this->name);
 
         // Réinitialisation
         $this->reset('name');

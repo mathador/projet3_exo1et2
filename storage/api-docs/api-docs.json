@@ -185,41 +185,6 @@
                 ]
             }
         },
-        "/api/auth/user": {
-            "get": {
-                "tags": [
-                    "Authentication"
-                ],
-                "summary": "Obtenir l'utilisateur authentifié",
-                "description": "Retourne l'utilisateur authentifié.",
-                "operationId": "4ce36f6648c6a36b11d4bdf5991b1f9c",
-                "responses": {
-                    "200": {
-                        "description": "Utilisateur authentifié",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "user": {
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Non authentifié"
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
-            }
-        },
         "/api/health": {
             "get": {
                 "tags": [
