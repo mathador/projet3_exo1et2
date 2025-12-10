@@ -3,19 +3,19 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Services\Tags\TagService;
+use App\Services\Api\TagApiClient;
 
 class TagForm extends Component
 {
     public $name = '';
 
     protected $rules = [
-        'name' => 'required|string|max:50|unique:tags,name',
+        'name' => 'required|string|max:50',
     ];
 
-    protected TagService $tagService;
+    protected TagApiClient $tagService;
 
-    public function boot(TagService $tagService)
+    public function boot(TagApiClient $tagService)
     {
         $this->tagService = $tagService;
     }
@@ -26,7 +26,7 @@ class TagForm extends Component
         $this->validate();
 
         // Création via le service
-        $this->tagService->createTag($this->name);
+        $this->tagService->create($this->name);
 
         // Réinitialisation
         $this->reset('name');

@@ -3,8 +3,8 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Services\Notes\NoteService;
-use App\Services\Tags\TagService;
+use App\Services\Api\NoteApiClient;
+use App\Services\Api\TagApiClient;
 
 class Notes extends Component
 {
@@ -15,14 +15,14 @@ class Notes extends Component
 
     protected $rules = [
         'text' => 'required|string',
-        'tag_id' => 'required|exists:tags,id',
+        'tag_id' => 'required|integer',
     ];
     protected $listeners = ['tagCreated' => 'refreshTags'];
 
-    protected NoteService $noteService;
-    protected TagService $tagService;
+    protected NoteApiClient $noteService;
+    protected TagApiClient $tagService;
 
-    public function boot(NoteService $noteService, TagService $tagService)
+    public function boot(NoteApiClient $noteService, TagApiClient $tagService)
     {
         $this->noteService = $noteService;
         $this->tagService = $tagService;
@@ -30,18 +30,18 @@ class Notes extends Component
 
     public function mount()
     {
-        $this->tags = $this->tagService->getAllTags();
+        $this->tags = $this->tagService->list();
         $this->loadNotes();
     }
 
     public function loadNotes()
     {
-        $this->notes = $this->noteService->getUserNotes();
+        $this->notes = $this->noteService->list();
     }
 
     public function refreshTags()
     {
-        $this->tags = $this->tagService->getAllTags();
+        $this->tags = $this->tagService->list();
     }
 
     public function save()
@@ -50,7 +50,7 @@ class Notes extends Component
         $this->validate();
 
         // Création via le service
-        $this->noteService->createNote($this->text, $this->tag_id);
+        $this->noteService->create($this->text, (int) $this->tag_id);
 
         // Réinitialisation
         $this->text = '';
@@ -65,7 +65,7 @@ class Notes extends Component
     public function delete($noteId)
     {
         // Suppression via le service
-        $this->noteService->deleteNote($noteId);
+        $this->noteService->delete((int) $noteId);
         
         // Rechargement des notes
         $this->loadNotes();
