@@ -56,6 +56,36 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "login avec mauvais mot de passe Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"john@example.com\",\r\n  \"password\": \"dddd\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://monolithic-app.test/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"monolithic-app",
+						"test"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
