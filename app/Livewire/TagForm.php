@@ -3,27 +3,35 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\Tag;
+use App\Services\Api\TagApiClient;
 
 class TagForm extends Component
 {
     public $name = '';
 
     protected $rules = [
-        'name' => 'required|string|max:50|unique:tags,name',
+        'name' => 'required|string|max:50',
     ];
+
+    protected TagApiClient $tagApiClient;
+
+    public function boot(TagApiClient $tagApiClient)
+    {
+        $this->tagApiClient = $tagApiClient;
+    }
 
     public function save()
     {
-        // logique métier
+        // Validation
         $this->validate();
 
-        // persitance
-        Tag::create(['name' => $this->name]);
+        // Création via le service
+        $this->tagApiClient->create($this->name);
 
+        // Réinitialisation
         $this->reset('name');
 
-        // affichage ???
+        // Notification aux autres composants
         $this->dispatch('tagCreated');
 
         session()->flash('message', 'Tag added!');

@@ -1,0 +1,91 @@
+{
+	"info": {
+		"_postman_id": "1b374089-e5d9-49e0-992a-d3d555ce4a68",
+		"name": "projet3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15419095",
+		"_collection_link": "https://universal-spaceship-512892.postman.co/workspace/projet2_exo1~6a190dfb-305c-4551-acbd-729707ad065a/collection/15419095-1b374089-e5d9-49e0-992a-d3d555ce4a68?action=share&source=collection_link&creator=15419095"
+	},
+	"item": [
+		{
+			"name": "health check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://monolithic-app.test/api/health",
+					"protocol": "http",
+					"host": [
+						"monolithic-app",
+						"test"
+					],
+					"path": [
+						"api",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login avec bon mot de passe",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"john@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://monolithic-app.test/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"monolithic-app",
+						"test"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login avec mauvais mot de passe Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"john@example.com\",\r\n  \"password\": \"dddd\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://monolithic-app.test/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"monolithic-app",
+						"test"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

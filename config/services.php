@@ -17,6 +17,9 @@ return [
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
+    'api' => [
+        'base_url' => env('API_BASE_URL', rtrim(env('APP_URL', 'http://monolithic-app.test'), '/') . '/api'),
+    ],
 
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),

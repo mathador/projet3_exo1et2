@@ -3,9 +3,8 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\Note;
-use App\Models\Tag;
-use Illuminate\Support\Facades\Auth;
+use App\Services\Api\NoteApiClient;
+use App\Services\Api\TagApiClient;
 
 class Notes extends Component
 {
@@ -16,42 +15,48 @@ class Notes extends Component
 
     protected $rules = [
         'text' => 'required|string',
-        'tag_id' => 'required|exists:tags,id',
+        'tag_id' => 'required|integer',
     ];
     protected $listeners = ['tagCreated' => 'refreshTags'];
 
+    protected NoteApiClient $noteApiClient;
+    protected TagApiClient $tagApiClient;
+
+    public function boot(NoteApiClient $noteApiClient, TagApiClient $tagApiClient)
+    {
+        $this->noteApiClient = $noteApiClient;
+        $this->tagApiClient = $tagApiClient;
+    }
+
     public function mount()
     {
-        $this->tags = Tag::all();
+        $this->tags = $this->tagApiClient->list();
         $this->loadNotes();
     }
 
     public function loadNotes()
     {
-        $this->notes = Note::with('tag')->where('user_id', Auth::id())->latest()->get();
+        $this->notes = $this->noteApiClient->list();
     }
 
     public function refreshTags()
     {
-        $this->tags = \App\Models\Tag::all();
+        $this->tags = $this->tagApiClient->list();
     }
 
     public function save()
     {
-        // metier
+        // Validation
         $this->validate();
 
-        // persistance
-        Note::create([
-            'user_id' => Auth::id(),
-            'tag_id' => $this->tag_id,
-            'text' => $this->text,
-        ]);
+        // Création via le service
+        $this->noteApiClient->create($this->text, (int) $this->tag_id);
 
-        // réinitialisation
+        // Réinitialisation
         $this->text = '';
         $this->tag_id = '';
 
+        // Rechargement des notes
         $this->loadNotes();
 
         session()->flash('message', 'Note added.');
@@ -59,9 +64,10 @@ class Notes extends Component
 
     public function delete($noteId)
     {
-        // persitance
-        Note::where('id', $noteId)->where('user_id', Auth::id())->delete();
-        // ihm ?
+        // Suppression via le service
+        $this->noteApiClient->delete((int) $noteId);
+        
+        // Rechargement des notes
         $this->loadNotes();
     }
 
