@@ -58,5 +58,42 @@ class TagService
     {
         return Tag::find($tagId);
     }
+
+    /**
+     * Met à jour un tag.
+     *
+     * @param int $tagId
+     * @param array $data
+     * @return Tag|null
+     */
+    public function updateTag(int $tagId, array $data): ?Tag
+    {
+        $tag = $this->getTagById($tagId);
+
+        if (!$tag) {
+            return null;
+        }
+
+        $tag->update($data);
+
+        return $tag;
+    }
+
+    /**
+     * Supprime un tag.
+     *
+     * @param int $tagId
+     * @return bool
+     */
+    public function deleteTag(int $tagId): bool
+    {
+        $tag = $this->getTagById($tagId);
+
+        if (!$tag) {
+            return false;
+        }
+
+        return $tag->delete();
+    }
 }
 
