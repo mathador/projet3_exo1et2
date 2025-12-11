@@ -62,5 +62,36 @@ class NoteService
             ->where('user_id', Auth::id())
             ->exists();
     }
+
+    /**
+     * Récupère une note par son ID pour l'utilisateur authentifié.
+     *
+     * @param int $noteId
+     * @return Note|null
+     */
+    public function getNoteById(int $noteId): ?Note
+    {
+        return Note::where('id', $noteId)
+            ->where('user_id', Auth::id())
+            ->first();
+    }
+
+    /**
+     * Met à jour une note pour l'utilisateur authentifié.
+     *
+     * @param int $noteId
+     * @param array $data
+     * @return bool
+     */
+    public function updateNote(int $noteId, array $data): bool
+    {
+        $note = $this->getNoteById($noteId);
+
+        if (!$note) {
+            return false;
+        }
+
+        return $note->update($data);
+    }
 }
 
