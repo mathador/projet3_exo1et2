@@ -14,6 +14,27 @@ class TagsController extends Controller
         protected TagService $tagService
     ) {}
 
+    /**
+     * Liste tous les tags.
+     *
+     * @OA\Get(
+     *     path="/api/tags",
+     *     summary="Liste des tags",
+     *     tags={"Tags"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Liste des tags",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="array", @OA\Items(type="object"))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Non authentifié"
+     *     )
+     * )
+     */
     public function index(): JsonResponse
     {
         $tags = $this->tagService->getAllTags();
@@ -23,6 +44,38 @@ class TagsController extends Controller
         ]);
     }
 
+    /**
+     * Crée un nouveau tag.
+     *
+     * @OA\Post(
+     *     path="/api/tags",
+     *     summary="Créer un tag",
+     *     tags={"Tags"},
+     *     security={{"sanctum":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name"},
+     *             @OA\Property(property="name", type="string", example="Important")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Tag créé avec succès",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Non authentifié"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Erreur de validation"
+     *     )
+     * )
+     */
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -43,6 +96,37 @@ class TagsController extends Controller
         }
     }
 
+    /**
+     * Affiche un tag spécifique.
+     *
+     * @OA\Get(
+     *     path="/api/tags/{id}",
+     *     summary="Afficher un tag",
+     *     tags={"Tags"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Tag trouvé",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Non authentifié"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Tag non trouvé"
+     *     )
+     * )
+     */
     public function show(string $id): JsonResponse
     {
         $tag = $this->tagService->getTagById((int) $id);
@@ -58,6 +142,47 @@ class TagsController extends Controller
         ]);
     }
 
+    /**
+     * Met à jour un tag.
+     *
+     * @OA\Put(
+     *     path="/api/tags/{id}",
+     *     summary="Mettre à jour un tag",
+     *     tags={"Tags"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string", example="Tag mis à jour")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Tag mis à jour",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Non authentifié"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Tag non trouvé"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Erreur de validation"
+     *     )
+     * )
+     */
     public function update(Request $request, string $id): JsonResponse
     {
         $validated = $request->validate([
@@ -77,6 +202,37 @@ class TagsController extends Controller
         ]);
     }
 
+    /**
+     * Supprime un tag.
+     *
+     * @OA\Delete(
+     *     path="/api/tags/{id}",
+     *     summary="Supprimer un tag",
+     *     tags={"Tags"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Tag supprimé",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Tag supprimé avec succès")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Non authentifié"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Tag non trouvé"
+     *     )
+     * )
+     */
     public function destroy(string $id): JsonResponse
     {
         if ($this->tagService->deleteTag((int) $id)) {
@@ -84,7 +240,7 @@ class TagsController extends Controller
                 'message' => 'Tag supprimé avec succès',
             ]);
         }
-        
+
         return response()->json([
             'message' => 'Tag non trouvé',
         ], 404);

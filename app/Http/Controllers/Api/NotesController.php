@@ -14,6 +14,27 @@ class NotesController extends Controller
         protected NoteService $noteService
     ) {}
 
+    /**
+     * Liste toutes les notes de l'utilisateur authentifié.
+     *
+     * @OA\Get(
+     *     path="/api/notes",
+     *     summary="Liste des notes",
+     *     tags={"Notes"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Liste des notes",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="array", @OA\Items(type="object"))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Non authentifié"
+     *     )
+     * )
+     */
     public function index(): JsonResponse
     {
         $notes = $this->noteService->getUserNotes();
@@ -23,6 +44,39 @@ class NotesController extends Controller
         ]);
     }
 
+    /**
+     * Crée une nouvelle note.
+     *
+     * @OA\Post(
+     *     path="/api/notes",
+     *     summary="Créer une note",
+     *     tags={"Notes"},
+     *     security={{"sanctum":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"text","tag_id"},
+     *             @OA\Property(property="text", type="string", example="Ma nouvelle note"),
+     *             @OA\Property(property="tag_id", type="integer", example=1)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Note créée avec succès",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Non authentifié"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Erreur de validation"
+     *     )
+     * )
+     */
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -40,6 +94,37 @@ class NotesController extends Controller
         ], 201);
     }
 
+    /**
+     * Affiche une note spécifique.
+     *
+     * @OA\Get(
+     *     path="/api/notes/{id}",
+     *     summary="Afficher une note",
+     *     tags={"Notes"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Note trouvée",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Non authentifié"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Note non trouvée"
+     *     )
+     * )
+     */
     public function show(string $id): JsonResponse
     {
         $note = $this->noteService->getNoteById((int) $id);
@@ -55,6 +140,48 @@ class NotesController extends Controller
         ]);
     }
 
+    /**
+     * Met à jour une note.
+     *
+     * @OA\Put(
+     *     path="/api/notes/{id}",
+     *     summary="Mettre à jour une note",
+     *     tags={"Notes"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="text", type="string", example="Note mise à jour"),
+     *             @OA\Property(property="tag_id", type="integer", example=1)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Note mise à jour",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Non authentifié"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Note non trouvée"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Erreur de validation"
+     *     )
+     * )
+     */
     public function update(Request $request, string $id): JsonResponse
     {
         $validated = $request->validate([
@@ -77,6 +204,37 @@ class NotesController extends Controller
         ]);
     }
 
+    /**
+     * Supprime une note.
+     *
+     * @OA\Delete(
+     *     path="/api/notes/{id}",
+     *     summary="Supprimer une note",
+     *     tags={"Notes"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Note supprimée",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Note supprimée avec succès")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Non authentifié"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Note non trouvée"
+     *     )
+     * )
+     */
     public function destroy(string $id): JsonResponse
     {
         if ($this->noteService->deleteNote((int) $id)) {
