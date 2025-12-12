@@ -10,7 +10,7 @@ class TagForm extends Component
     public $name = '';
 
     protected $rules = [
-        'name' => 'required|string|max:50',
+        'name' => 'required|string|max:50|unique:tags,name',
     ];
 
     protected TagApiClient $tagApiClient;

@@ -23,7 +23,6 @@ new class extends Component {
             ]);
         } catch (ValidationException $e) {
             $this->reset('current_password', 'password', 'password_confirmation');
-
             throw $e;
         }
 
