@@ -188,15 +188,13 @@ class TagsController extends Controller
             'name' => ['required', 'string', 'max:50', 'unique:tags,name,' . $id],
         ]);
 
-        $tag = $this->tagService->getTagById((int) $id);
+        $tag = $this->tagService->updateTag((int) $id, $validated);
 
         if (!$tag) {
             return response()->json([
                 'message' => 'Tag non trouvé',
             ], 404);
         }
-
-        $tag->update($validated);
 
         return response()->json([
             'data' => $tag,
@@ -236,19 +234,15 @@ class TagsController extends Controller
      */
     public function destroy(string $id): JsonResponse
     {
-        $tag = $this->tagService->getTagById((int) $id);
-
-        if (!$tag) {
+        if ($this->tagService->deleteTag((int) $id)) {
             return response()->json([
-                'message' => 'Tag non trouvé',
-            ], 404);
+                'message' => 'Tag supprimé avec succès',
+            ]);
         }
-
-        $tag->delete();
-
+        
         return response()->json([
-            'message' => 'Tag supprimé avec succès',
-        ]);
+            'message' => 'Tag non trouvé',
+        ], 404);
     }
 }
 

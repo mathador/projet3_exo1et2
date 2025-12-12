@@ -13,11 +13,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://monolithic-app.test/api/health",
-					"protocol": "http",
+					"raw": "{{baseHerdUrl}}/api/health",
 					"host": [
-						"monolithic-app",
-						"test"
+						"{{baseHerdUrl}}"
 					],
 					"path": [
 						"api",
@@ -28,7 +26,7 @@
 			"response": []
 		},
 		{
-			"name": "login avec bon mot de passe",
+			"name": "john login avec bon mot de passe",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -42,16 +40,33 @@
 					}
 				},
 				"url": {
-					"raw": "http://monolithic-app.test/api/auth/login",
-					"protocol": "http",
+					"raw": "{{baseHerdUrl}}/api/auth/login",
 					"host": [
-						"monolithic-app",
-						"test"
+						"{{baseHerdUrl}}"
 					],
 					"path": [
 						"api",
 						"auth",
 						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseHerdUrl}}/api/auth/logout",
+					"host": [
+						"{{baseHerdUrl}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"logout"
 					]
 				}
 			},
@@ -72,11 +87,9 @@
 					}
 				},
 				"url": {
-					"raw": "http://monolithic-app.test/api/auth/login",
-					"protocol": "http",
+					"raw": "{{baseHerdUrl}}/api/auth/login",
 					"host": [
-						"monolithic-app",
-						"test"
+						"{{baseHerdUrl}}"
 					],
 					"path": [
 						"api",
