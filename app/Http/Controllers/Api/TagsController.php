@@ -235,14 +235,20 @@ class TagsController extends Controller
      */
     public function destroy(string $id): JsonResponse
     {
-        if ($this->tagService->deleteTag((int) $id)) {
-            return response()->json([
-                'message' => 'Tag supprimé avec succès',
-            ]);
-        }
+        try {
+            if ($this->tagService->deleteTag((int) $id)) {
+                return response()->json([
+                    'message' => 'Tag supprimé avec succès',
+                ]);
+            }
 
-        return response()->json([
-            'message' => 'Tag non trouvé',
-        ], 404);
+            return response()->json([
+                'message' => 'Tag non trouvé',
+            ], 404);
+        } catch (\RuntimeException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 409);
+        }
     }
 }

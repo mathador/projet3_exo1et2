@@ -11,6 +11,10 @@
             <livewire:tag-form />
         </div>
 
+        <div class="mt-6 p-4 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-white dark:bg-neutral-900">
+            <livewire:tag-list />
+        </div>
+
     </div>
 
     @livewireScripts
