@@ -21,7 +21,12 @@ class TagApiClient
         }
 
         return collect($response->json('data', []))
-            ->map(fn (array $tag) => (object) $tag);
+            ->map(function (array $tag) {
+                $instance = new Tag();
+                $instance->forceFill($tag);
+
+                return $instance;
+            });
     }
 
     public function getById(int $tagId): Tag
@@ -32,7 +37,10 @@ class TagApiClient
             throw new \RuntimeException('Impossible de récupérer le tag via l’API.');
         }
 
-        return $response->json('data', []);
+        $tag = new Tag();
+        $tag->forceFill($response->json('data', []));
+
+        return $tag;
     }
 
     public function create(string $name): Tag
@@ -42,7 +50,10 @@ class TagApiClient
         ]);
 
         if ($response->created()) {
-            return $response->json('data', []);
+            $tag = new Tag();
+            $tag->forceFill($response->json('data', []));
+
+            return $tag;
         }
 
         if ($response->status() === 422) {
@@ -52,6 +63,18 @@ class TagApiClient
         }
 
         throw new \RuntimeException('Impossible de créer le tag via l’API.');
+    }
+
+    public function delete(int $tagId): void
+    {
+        $response = $this->client->auth()->delete("/tags/{$tagId}");
+
+        if ($response->failed()) {
+            if ($response->status() === 409) {
+                throw new \RuntimeException($response->json('message'));
+            }
+            throw new \RuntimeException('Impossible de supprimer le tag via l’API.');
+        }
     }
 }
 
