@@ -8,6 +8,24 @@
 	},
 	"item": [
 		{
+			"name": "csrf-cookie",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseHerdUrl}}/sanctum/csrf-cookie",
+					"host": [
+						"{{baseHerdUrl}}"
+					],
+					"path": [
+						"sanctum",
+						"csrf-cookie"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "health check",
 			"request": {
 				"method": "GET",
@@ -29,10 +47,45 @@
 			"name": "john login avec bon mot de passe",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "eyJpdiI6ImJ6cGVYOVlCWVQ5K1NGbUtWTUwzSEE9PSIsInZhbHVlIjoiNldkTXdSSzlSekpXK1JKV2EwREI4RmRHczVRNTVCNWNvRHlvR1NoUHN3VzZpYW9nSVE1M0Z6Ri9YUDdrTWcvaUFyWkxaMHFWSndGUGJTa1dpU1VCRzk4N2tQUUNzU1R2S0pJRzlvZTBWZ25YQllWRHBYcWljeTRKKzR6U2hKd0QiLCJtYWMiOiIxZjhkYzkwNWE3OWI4NjI0MmM2MDcxZDk4NjNkOTEwZDE0MzFiMGYwOTE3NGE4M2FhMDJiMGI3MmVhMmZiMDA3IiwidGFnIjoiIn0",
+						"type": "text",
+						"disabled": true
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n  \"email\": \"john@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseHerdUrl}}/api/auth/login",
+					"host": [
+						"{{baseHerdUrl}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "thomas login avec bon mot de passe",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"thomas@facadia.com\",\r\n  \"password\": \"dddddddd\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -95,6 +148,128 @@
 						"api",
 						"auth",
 						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "notes",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{monolithic_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseHerdUrl}}/api/notes",
+					"host": [
+						"{{baseHerdUrl}}"
+					],
+					"path": [
+						"api",
+						"notes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create tag",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{monolithic_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Important\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseHerdUrl}}/api/tags",
+					"host": [
+						"{{baseHerdUrl}}"
+					],
+					"path": [
+						"api",
+						"tags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tags",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{monolithic_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseHerdUrl}}/api/tags",
+					"host": [
+						"{{baseHerdUrl}}"
+					],
+					"path": [
+						"api",
+						"tags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tags",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{monolithic_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseHerdUrl}}/api/tags/5",
+					"host": [
+						"{{baseHerdUrl}}"
+					],
+					"path": [
+						"api",
+						"tags",
+						"5"
 					]
 				}
 			},
