@@ -41,7 +41,7 @@ class Notes extends Component
 
     public function refreshTags()
     {
-        $this->tags = $this->tagApiClient->list();
+        $this->tags = $this->tagService->getAllTags();
     }
 
     public function save()
