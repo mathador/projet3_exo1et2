@@ -809,6 +809,12 @@
                 "in": "header",
                 "scheme": "Bearer",
                 "bearerFormat": "JWT"
+            },
+            "xsrf": {
+                "type": "apiKey",
+                "description": "CSRF protection token (XSRF-TOKEN cookie value)",
+                "name": "X-XSRF-TOKEN",
+                "in": "header"
             }
         }
     },
@@ -832,7 +838,8 @@
     ],
     "security": [
         {
-            "sanctum": []
+            "sanctum": [],
+            "xsrf": []
         }
     ]
 }
