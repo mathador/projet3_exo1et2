@@ -63,10 +63,17 @@ return [
                     'scheme' => 'Bearer',
                     'bearerFormat' => 'JWT',
                 ],
+                'xsrf' => [
+                    'type' => 'apiKey',
+                    'description' => 'CSRF protection token (XSRF-TOKEN cookie value)',
+                    'name' => 'X-XSRF-TOKEN',
+                    'in' => 'header',
+                ],
             ],
             'security' => [
                 [
                     'sanctum' => [],
+                    'xsrf' => [],
                 ],
             ],
         ],
@@ -85,10 +92,23 @@ return [
             'authorization' => [
                 'persist_authorization' => env('L5_SWAGGER_UI_PERSIST_AUTHORIZATION', false),
             ],
+            'request_interceptor' => 'function(request) {
+                // Récupère le cookie XSRF-TOKEN
+                function getCookie(name) {
+                    const value = `; ${document.cookie}`;
+                    const parts = value.split(`; ${name}=`);
+                    if (parts.length === 2) return parts.pop().split(";").shift();
+                }
+
+                const xsrfToken = getCookie("XSRF-TOKEN");
+                if (xsrfToken) {
+                    request.headers["X-XSRF-TOKEN"] = xsrfToken;
+                }
+                return request;
+            }',
         ],
         'constants' => [
             'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://monolithic-app.test'),
         ],
     ],
 ];
-

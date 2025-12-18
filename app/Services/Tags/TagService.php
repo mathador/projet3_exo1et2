@@ -93,10 +93,6 @@ class TagService
             return false;
         }
 
-        if ($tag->notes()->exists()) {
-            throw new \RuntimeException('Ce tag est utilisé par des notes et ne peut pas être supprimé.');
-        }
-
         return $tag->delete();
     }
 }
