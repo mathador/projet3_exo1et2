@@ -1,21 +1,3 @@
-Si nginx est rouge dans herd (car port 80 utilisé par "system" dans windows, c'est IIS):
-```bash
-sc stop W3SVC
-sc config W3SVC start= disabled
-```
-
-Ensuite si php artisan ne trouve pas de port,
-```bash
-where php
-```
-permet de savoir si le path tombe bien sur le php de Herd et pas de MAMP par exemple
-
-Puis il faut générer une key:
-```bash
-php artisan key:generate
-```
-
-
 # Transformez l'architecture d'une application existante
 
 # Plot
@@ -44,6 +26,35 @@ https://github.com/coreybutler/nvm-windows#readme
 
 3. Clone this project
 
+
+# Structure globale:
+
+- répertoire src contient le frontend en React
+- répertoire app contient l'api backend en Laravel
+- répertoire database contient les script de migration et la base de données SQLite
+
+
+# En cas de problèmes de ports
+
+Si nginx est rouge dans herd (car port 80 utilisé par "system" dans windows, c'est IIS):
+```bash
+sc stop W3SVC
+sc config W3SVC start= disabled
+```
+
+Ensuite si php artisan ne trouve pas de port,
+```bash
+where php
+```
+permet de savoir si le path tombe bien sur le php de Herd et pas de MAMP par exemple
+
+Puis il faut générer une key:
+```bash
+php artisan key:generate
+```
+
+
+
 4. il faut peut-être
 ```bash
 composer install
@@ -66,7 +77,9 @@ php artisan route:cache
 composer dump-autoload
 ```
 
-4. Run 
+4. Start Herd
+
+5. Run Client
 
 ```bash
 npm i
@@ -75,10 +88,4 @@ and
 ```bash
 npm run dev
 ```
-
-5. Start Herd
-
-6. Access `http://monolithic-app.test` from your browser
-
 You are setup!
-
